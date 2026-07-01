@@ -72,6 +72,25 @@
   }
   .logo span{ color:var(--bright-blue); }
   nav{ display:flex; align-items:center; gap:28px; }
+  .nav-right{ display:flex; align-items:center; gap:18px; }
+  .nav-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:32px; height:32px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:0;
+  }
+  .nav-toggle span{
+    display:block;
+    width:100%;
+    height:2px;
+    background:var(--text-on-dark);
+    border-radius:2px;
+  }
   nav a{
     color:var(--muted-blue-grey);
     text-decoration:none;
@@ -482,6 +501,24 @@
     .hero h1{ font-size:38px; }
     .feature-grid{ grid-template-columns:1fr 1fr; }
     nav{ display:none; }
+    header .container{ position:relative; }
+    nav.nav-links{
+      display:none;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:var(--ink);
+      flex-direction:column;
+      align-items:flex-start;
+      padding:18px 24px;
+      gap:16px;
+      border-top:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 12px 24px rgba(0,0,0,0.35);
+      z-index:60;
+    }
+    nav.nav-links.open{ display:flex; }
+    .nav-toggle{ display:flex; }
     .how-visual{ order:-1; }
     .pf-grid, .wyg-grid{ grid-template-columns:1fr; gap:36px; }
     .wyg-layout{ grid-template-columns:1fr; }
@@ -598,13 +635,18 @@
 <header>
   <div class="container">
     <a href="index.html" style="text-decoration:none;"><div class="logo">Anchor<span>Link</span></div></a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="features.html">Features</a>
-      <a href="how-it-works.html">How It Works</a>
-      <a href="directory.html">Directory</a>
-      <a href="https://app.anchorlink360.com" class="btn btn-primary btn-sm">Get the App</a>
-    </nav>
+    <div class="nav-right">
+      <nav class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="features.html">Features</a>
+        <a href="how-it-works.html">How It Works</a>
+        <a href="directory.html">Directory</a>
+      </nav>
+      <a href="https://app.anchorlink360.com" class="btn btn-primary btn-sm nav-cta">Get the App</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -734,6 +776,26 @@
     <div class="foot-right">Powered by <a href="https://26digitalpro.io" target="_blank" rel="noopener">26DIGITALPRO.io</a></div>
   </div>
 </footer>
+
+
+<script>
+(function(){
+  var toggle = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  if(toggle && links){
+    toggle.addEventListener('click', function(){
+      var isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+      });
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
